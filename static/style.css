@@ -1,0 +1,143 @@
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: #f1f1f1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.navbar-default {
+    background-color: #00629b;
+    border-color: aliceblue;
+}
+
+.navbar-brand {
+    color:white !important;
+    font-size: 20pt;
+    padding: 10px;
+}
+
+li {
+    padding: 2px;
+    font-size: 10pt;
+}
+#perturbagenDiv {
+    margin-right: 50px;
+    float:left;
+}
+
+#kinaseDiv {
+    margin-right: 50px;
+    width:25%;
+}
+
+.details_form {
+    display:inline;
+}
+
+.container {
+    padding:10px;
+    margin: 0;
+    max-width: 1800px;
+}
+
+#cy {
+    height: 610px;
+    width: 60%;
+    display:block;
+    background-color: white;
+    float:left;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding:0;
+}
+
+#cy2 {
+    margin-top:10px;
+    margin-bottom:10px;
+    height: 380px;
+    width: 60%;
+    display:block;
+    background-color: white;
+    padding:auto;
+    float:left;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#cy-big {
+    margin-bottom:10px;
+    display:block;
+    background-color: white;
+    float:left;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    visibility: hidden;
+    height: 0;
+}
+
+#cy-big-PKinfo {
+    background-color: white;
+    margin-bottom:10px;
+    float:right;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    visibility: hidden;
+    height: 0;
+    overflow:auto;
+}
+#interactionInfo {
+    width: 39%;
+    float:right;
+    height: 350px;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#interactionInfo > div > a {
+    font-weight: bold;
+}
+
+#interactionInfo > div {
+    margin:10px;
+}
+
+#detailedInfo {
+    width: 39%;
+    float:right;
+    margin-top: 10px;
+    height: 250px;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#detailedInfo > div > a {
+    font-weight: bold;
+}
+
+#detailedInfo > div:nth-child(3) > a{
+    font-size: 12px;
+}
+
+#detailedInfo > div {
+    margin:10px;
+}
+
+#detailedInfo > div:nth-child(4) > a{
+    color: red;
+}
+
+table, th, td {
+  border: 1px solid black;
+    font-size: 12px;
+}
+
+table {
+    margin: auto;
+    width: 100%;
+}
+
+a {
+    font-weight: bold;
+}
+
+#finalScoreInfoID {
+    color: red;
+}
