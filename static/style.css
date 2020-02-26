@@ -42,23 +42,20 @@ li {
 
 #cy {
     height: 610px;
-    width: 60%;
-    display:block;
     background-color: white;
-    float:left;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding:0;
 }
 
 #cy2 {
-    margin-top:10px;
-    margin-bottom:10px;
     height: 380px;
-    width: 60%;
-    display:block;
     background-color: white;
-    padding:auto;
-    float:left;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#cy3 {
+    height: 380px;
+    background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -82,9 +79,6 @@ li {
     overflow:auto;
 }
 #interactionInfo {
-    width: 39%;
-    float:right;
-    height: 350px;
     padding: 10px;
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -94,15 +88,7 @@ li {
     font-weight: bold;
 }
 
-#interactionInfo > div {
-    margin:10px;
-}
-
 #detailedInfo {
-    width: 39%;
-    float:right;
-    margin-top: 10px;
-    height: 250px;
     padding: 10px;
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);

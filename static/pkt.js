@@ -84,7 +84,7 @@ function show_PKT(cy, perturbagen, kinase){
         // Triggers on clicking the target node, populates the info pane
         cy.on('tap', 'node', function () {
 
-            if (this.relativePoint().x == 550) {
+            if (this.relativePoint().x == perturbagen_width) {
 
                 // Retrieve info from the cache
                 let storage = JSON.parse(sessionStorage.getItem('PKT_Data'));
@@ -108,7 +108,11 @@ function show_cyto_PKT() {
         let perturbagen = $('#perturbagenSelect').val();
         let kinase = $('#kinaseSelect').val();
 
+        // $('#cy').css('visibility', 'visible');
+        // $('#cy').css('height', '610px;');
+
         show_PKT(cy, perturbagen, kinase);
+
     });
 }
 
@@ -122,7 +126,7 @@ function displayInfo_PKT(storage, index){
     $('#colocalisationInfoID').html(storage[index].properties.colocScore.toFixed(4));
     $('#uniquenessInfoID').html(storage[index].properties.uniquenessScore.toFixed(4) + ' (See below)');
     $('#finalScoreInfoID').html(storage[index].properties.finalScore.toFixed(4));
-    $('#kinaseSimilarityID').html('Left > Shared P, Right > Shared T');
+    $('#kinaseSimilarityID').html('Shared P << >> Shared T');
 }
 
 function show_perturbs_details() {
@@ -222,8 +226,11 @@ function show_uniqueness_details() {
 
             let target = data[0][1];
 
+            let current_cy_width = $('#cy2').css('width').substring(0,3);
+            let target_width = current_cy_width - 50;
+
             cy.add([
-                {group: 'nodes', data: {id: target}, position: {x: 550, y: 50}},
+                {group: 'nodes', data: {id: target}, position: {x: target_width, y: 50}},
             ]);
 
             cy.nodes('[id="' + target + '"]').style('shape', 'ellipse');
@@ -255,11 +262,16 @@ function show_kinase_similarity_details() {
 
     $('#kinaseSimilarityID').on('click', function(event) {
 
-        let cy = cytoScapeStyle('cy2');
+        let cy = cytoScapeStyle('cy3');
         let kinase = $('#kinaseInfoID').text();
 
+        let current_cy_width = $('#cy3').css('width').substring(0,3);
+        let current_cy_height = $('#cy3').css('height').substring(0,3);
+        let kinase_width = current_cy_width / 2;
+        let kinase_height = current_cy_height / 2;
+
         cy.add([
-                {group: 'nodes', data: {id: kinase}, position: {x: 300, y: 200}},
+            {group: 'nodes', data: {id: kinase}, position: {x: kinase_width, y: kinase_height}},
         ]);
 
         cy.nodes('[id = "' + kinase + '"]').style('background-color', '#ff0000');
