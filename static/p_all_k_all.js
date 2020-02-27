@@ -103,9 +103,12 @@ function show_cyto_K_all() {
 
             let kinase = $('#kinaseSelect').val();
 
+            let current_cy_width = $('#cy').css('width').split('.')[0];
+            let kinase_width = current_cy_width / 2;
+
             // Adds the kinase node
             cy.add([
-                {group: 'nodes', data: {id: kinase}, position: {x: 300, y: 50}},
+                {group: 'nodes', data: {id: kinase}, position: {x: kinase_width, y: 50}},
             ]);
 
             // Goes through all perturbagens and target affected by the selected perturbagen

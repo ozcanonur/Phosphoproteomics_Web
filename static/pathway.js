@@ -18,6 +18,10 @@ function show_pathway(event){
     $('#cy-big-PKinfo').css('visibility', 'visible');
     $('#cy-big-PKinfo').css('height', '1000px');
 
+    $('#kinase-pathway-title').css('visibility', 'visible');
+    $('#kinase-pathway-title').css('height', '');
+    $('#kinase-pathway-title').css('padding', '10px');
+
     // Create a cytoscape graph instance
     let cy = cytoScapeStyle('cy-big');
     let kinase = $('#kinaseSelect').val();
@@ -36,7 +40,7 @@ function show_pathway(event){
     })
     .done(function (data) {
 
-        let current_cy_width = $('#cy-big').css('width').substring(0,3);
+        let current_cy_width = $('#cy-big').css('width').split('.')[0];
         let start_node_width = current_cy_width / 2;
 
         cy.add([

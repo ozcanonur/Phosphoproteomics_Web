@@ -38,6 +38,9 @@ function show_PKT(cy, perturbagen, kinase){
     })
     .done(function (data) {
 
+        $('#cy-container').css('visibility', 'visible');
+        $('#cy-container').css('height', '');
+
         let current_cy_width = $('#cy').css('width').substring(0,3);
         let kinase_width = (current_cy_width - 100) / 2;
         let perturbagen_width = current_cy_width - 50;
@@ -224,6 +227,9 @@ function show_uniqueness_details() {
         })
         .done(function (data) {
 
+            $('#cy2').css('visibility', 'visible');
+            $('#cy2').css('height', '');
+
             let target = data[0][1];
 
             let current_cy_width = $('#cy2').css('width').substring(0,3);
@@ -262,12 +268,15 @@ function show_kinase_similarity_details() {
 
     $('#kinaseSimilarityID').on('click', function(event) {
 
+        $('#cy3').css('visibility', 'visible');
+        $('#cy3').css('height', '');
+
         let cy = cytoScapeStyle('cy3');
         let kinase = $('#kinaseInfoID').text();
 
-        let current_cy_width = $('#cy3').css('width').substring(0,3);
-        let current_cy_height = $('#cy3').css('height').substring(0,3);
+        let current_cy_width = $('#cy3').css('width').split('.')[0];
         let kinase_width = current_cy_width / 2;
+        let current_cy_height = $('#cy3').css('height').split('.')[0];
         let kinase_height = current_cy_height / 2;
 
         cy.add([

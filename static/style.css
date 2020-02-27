@@ -3,8 +3,18 @@ body {
     background-color: #f1f1f1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-weight:900;
 }
 
+.custom-select {
+    font-weight:900;
+}
+option{
+    font-weight:900;
+}
+button{
+    font-weight:900;
+}
 .navbar-default {
     background-color: #00629b;
     border-color: aliceblue;
@@ -20,6 +30,7 @@ li {
     padding: 2px;
     font-size: 10pt;
 }
+
 #perturbagenDiv {
     margin-right: 50px;
     float:left;
@@ -43,45 +54,44 @@ li {
 #cy {
     height: 610px;
     background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
     padding:0;
+    margin-left:10px;
 }
 
 #cy2 {
     height: 380px;
     background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-right:10px;
 }
 
 #cy3 {
     height: 380px;
     background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-left:10px;
+    margin-bottom:10px;
 }
 
 #cy-big {
-    margin-bottom:10px;
-    display:block;
     background-color: white;
     float:left;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     visibility: hidden;
     height: 0;
+    margin-left:10px;
 }
 
 #cy-big-PKinfo {
     background-color: white;
-    margin-bottom:10px;
     float:right;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     visibility: hidden;
     height: 0;
     overflow:auto;
+    margin-right:10px;
 }
 #interactionInfo {
     padding: 10px;
     background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-right:10px;
 }
 
 #interactionInfo > div > a {
@@ -91,7 +101,7 @@ li {
 #detailedInfo {
     padding: 10px;
     background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-right:10px;
 }
 
 #detailedInfo > div > a {
@@ -102,16 +112,13 @@ li {
     font-size: 12px;
 }
 
-#detailedInfo > div {
-    margin:10px;
-}
 
 #detailedInfo > div:nth-child(4) > a{
     color: red;
 }
 
 table, th, td {
-  border: 1px solid black;
+    border: 1px solid black;
     font-size: 12px;
 }
 

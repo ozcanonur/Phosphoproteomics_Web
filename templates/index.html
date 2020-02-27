@@ -19,14 +19,12 @@
 <div class="navbar navbar-default navbar-fixed-top topnav" role='navigation' style="padding:5px;">
     <div class="container topnav" style="padding:0;">
         <div class="navbar-header">
-            <a class="navbar-brand">
-                <strong>Prolog Things</strong>
-            </a>
+            <a class="navbar-brand"><strong>Prolog Things</strong></a>
         </div>
     </div>
 </div>
 
-<div class="container">
+<div style="padding:10px; background-color:white;">
     <form id='form' method="POST" style="display:grid; row-gap: 10px;">
         <div id="perturbagenDiv" style="display:grid; grid-template-columns: 250px 200px; column-gap: 10px;">
             <div>
@@ -51,75 +49,77 @@
                     {% endfor %}
                 </select>
             </div>
-
             <div>
                 <button id="kinaseSeeAllBtn" style="height:38px; width:100%;">See all for this K</button>
             </div>
             <div>
                 <button id="pathwayBtn" style="height:38px; width:100%;">Pathway</button>
             </div>
-
-            <button style="height:38px;" onclick="$('#cy-big').css('height',0); $('#cy-big-PKinfo').css('height',0); return false;"><i class="fas fa-times-circle"></i></button>
-
             <div style="display:grid; text-align:center;">
                 <input type="range" min="0" max="1" step="0.1" value="0" class="slider" id="pathwaySlider" oninput="pathwaySliderNum.value = 'KT_assoc threshold:' + pathwaySlider.value">
-                <output name="pathwaySliderNum" id="pathwaySliderNum" style="font-weight:bold;">KT_assoc threshold: 0</output>
+                <output name="pathwaySliderNum" id="pathwaySliderNum" style="font-weight:bold; font-size:8pt;">KT_assoc threshold: 0</output>
             </div>
         </div>
-
     </form>
+</div>
 
-    <div style="display:grid; column-gap: 10px; grid-template-columns: 75% 24%;">
-        <div id='cy-big' style="visibility: hidden; height: 0;"></div>
-        <div id='cy-big-PKinfo' style="float:right;"></div>
+<div>
+    <div id='kinase-pathway-title' style="background-color: #00629b; color:white; text-align:center; font-size:15pt; font-weight:900; padding:10px;">Kinase Pathway <button style="height:38px;" onclick="kinasePathwayCloseBtn(); return false;"><i class="fas fa-times-circle"></i></button></div>
+    <div style="display:grid; column-gap:10px; grid-template-columns: 3fr 1fr; background-color:#00629b;">
+        <div id='cy-big' style="visibility: visible; height:1000px; "></div>
+        <div id='cy-big-PKinfo' style="float:right; visibility:visible; height:1000px"></div>
     </div>
+</div>
 
-    <div style="display:grid; column-gap: 10px; grid-template-columns: 70% 29%; padding:0;">
+<div style="background-color: #00629b; color:white; text-align:center; font-size:15pt; font-weight:900; padding:10px;">Perturbagen - Kinase - Target <button style="height:38px;" onclick="kinasePathwayCloseBtn(); return false;"><i class="fas fa-times-circle"></i></button></div>
+<div id='cy-container' style="display:grid; column-gap:10px; grid-template-columns: 7fr 3fr; padding:0;visibility:visible;background-color:#00629b">
 
-        <div id='cy'></div>
+    <div id='cy'></div>
 
-        <div style="display:grid; row-gap: 10px; grid-template-rows: 60% 38%;">
-            <div id='interactionInfo' style="display:grid; grid-template-rows:11% 11% 11% 11% 11% 11% 11% 11% 11%">
-                <div>Perturbagen: <a id="perturbagenInfoID"></a></div>
-                <div>Kinase: <a id="kinaseInfoID"></a></div>
-                <div>Target: <a id="targetInfoID"></a></div>
-                <div>Effect: <a id="effectInfoID"></a></div>
-                <div>Perturbs Score:
-                    <form class="details_form" method="POST">
-                        <a href='#' id="perturbsScoreInfoID"></a>
-                    </form>
-                </div>
-                <div>Colocalisation:
-                    <form class="details_form" method="POST">
-                        <a href='#' id="colocalisationInfoID"></a>
-                    </form>
-                </div>
-                <div>KT_Association Score:
-                    <form class="details_form" method="POST">
-                        <a href='#' id="uniquenessInfoID"></a>
-                    </form>
-                </div>
-                <div>Final Score:
-                    <a id="finalScoreInfoID"></a>
-                </div>
-                <div>Kinase Similarity:
-                    <form class="details_form" method="POST">
-                        <a href='#' id="kinaseSimilarityID"></a>
-                    </form>
-                </div>
+    <div style="display:grid; grid-template-rows: 6fr 4fr;">
+        <div id='interactionInfo' style="display:grid; grid-template-rows:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr">
+            <div>Perturbagen: <a id="perturbagenInfoID"></a></div>
+            <div>Kinase: <a id="kinaseInfoID"></a></div>
+            <div>Target: <a id="targetInfoID"></a></div>
+            <div>Effect: <a id="effectInfoID"></a></div>
+            <div>Perturbs Score:
+                <form class="details_form" method="POST">
+                    <a href='#' id="perturbsScoreInfoID"></a>
+                </form>
             </div>
-
-            <div id="detailedInfo"></div>
+            <div>Colocalisation:
+                <form class="details_form" method="POST">
+                    <a href='#' id="colocalisationInfoID"></a>
+                </form>
+            </div>
+            <div>KT_Association Score:
+                <form class="details_form" method="POST">
+                    <a href='#' id="uniquenessInfoID"></a>
+                </form>
+            </div>
+            <div>Final Score:
+                <a id="finalScoreInfoID"></a>
+            </div>
+            <div>Kinase Similarity:
+                <form class="details_form" method="POST">
+                    <a href='#' id="kinaseSimilarityID"></a>
+                </form>
+            </div>
         </div>
 
-    </div>
-
-    <div style="display:grid; column-gap: 10px; grid-template-columns: 50% 50%; margin-top: 10px; margin-right:10px;">
-        <div id='cy2'></div>
-        <div id='cy3'></div>
+        <div id="detailedInfo"></div>
     </div>
 
 </div>
+
+<div>
+    <div style="background-color: #00629b; color:white; text-align:center; font-size:15pt; font-weight:900; padding:10px;">Kinase - Target Association <button style="height:38px;" onclick="kinasePathwayCloseBtn(); return false;"><i class="fas fa-times-circle"></i></button></div>
+    <div style="display:grid; column-gap: 10px; grid-template-columns: 1fr 1fr; background-color: #00629b;">
+        <div id='cy3' style="visibility:visible;"></div>
+        <div id='cy2' style="visibility:visible;"></div>
+    </div>
+</div>
+
 
 </body>
 <script src="{{ url_for('static', filename='main.js') }}"></script>
@@ -127,4 +127,29 @@
 <script src="{{ url_for('static', filename='pathway.js') }}"></script>
 <script src="{{ url_for('static', filename='pkt.js') }}"></script>
 <script src="{{ url_for('static', filename='util_style.js') }}"></script>
+
+<script>
+    function kinasePathwayCloseBtn(){
+
+        $('#cy-big').css('height',0);
+        $('#cy-big-PKinfo').css('height',0);
+        $('#kinase-pathway-title').css('visibility', 'hidden');
+        $('#kinase-pathway-title').css('height', 0);
+        $('#kinase-pathway-title').css('padding', 0);
+    }
+
+    function pktCloseBtn(){
+
+        $('#cy-container').css('height',0);
+    }
+
+    function kinasePathwayCloseBtn(){
+
+        $('#cy-big').css('height',0);
+        $('#cy-big-PKinfo').css('height',0);
+        $('#kinase-pathway-title').css('visibility', 'hidden');
+        $('#kinase-pathway-title').css('height', 0);
+        $('#kinase-pathway-title').css('padding', 0);
+    }
+</script>
 </html>
