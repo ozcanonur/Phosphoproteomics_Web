@@ -27,77 +27,92 @@ function filter_kinase() {
 
 function show_PKT(cy, perturbagen, kinase){
 
+    // Get P-K score
+    let pk_score = 0;
     $.ajax({
         data: {
             perturbagen: perturbagen,
             kinase: kinase,
-            option: 'get_PKT'
+            option: 'get_PK'
         },
         type: 'POST',
         url: '/process_ajax'
-    })
-    .done(function (data) {
+        })
+        .done(function (data) {
+            pk_score = data[2].toFixed(3);
 
-        $('#cy-container').css('visibility', 'visible');
-        $('#cy-container').css('height', '');
+            $.ajax({
+                data: {
+                    perturbagen: perturbagen,
+                    kinase: kinase,
+                    option: 'get_PKT'
+                },
+                type: 'POST',
+                url: '/process_ajax'
+            })
+            .done(function (data) {
 
-        let current_cy_width = $('#cy').css('width').substring(0,3);
-        let kinase_width = (current_cy_width - 100) / 2;
-        let perturbagen_width = current_cy_width - 50;
+                $('#cy-container').css('visibility', 'visible');
+                $('#cy-container').css('height', '');
 
-        // Add perturbagen, kinase nodes and an edge
-        cy.add([
-            {group: 'nodes', data: {id: perturbagen}, position: {x: 50, y: 50}},
-            {group: 'nodes', data: {id: kinase}, position: {x: kinase_width, y: 50}},
-            {group: 'edges', data: {id: perturbagen + 'to' + kinase, source: perturbagen, target: kinase}}
-        ]);
+                let current_cy_width = $('#cy').css('width').split('.')[0];
+                let kinase_width = (current_cy_width - 100) / 2;
+                let perturbagen_width = current_cy_width - 50;
 
-        cy.nodes('[id="' + kinase + '"]').style('shape', 'square');
+                // Add perturbagen, kinase nodes and an edge
+                cy.add([
+                    {group: 'nodes', data: {id: perturbagen}, position: {x: 50, y: 50}},
+                    {group: 'nodes', data: {id: kinase}, position: {x: kinase_width, y: 50}},
+                    {group: 'edges', data: {id: perturbagen + 'to' + kinase, source: perturbagen, target: kinase, label: pk_score}}
+                ]);
 
-        // Go through all targets that has an interaction with
-        // the selected P and K, create nodes and edges for them
-        let height = 50;
-        for (let i = 0; i < data.length; i++, height += 75) {
+                cy.nodes('[id="' + kinase + '"]').style('shape', 'square');
 
-            let currTarget = data[i][2];
-            let currUporDown = data[i][3];
-            let finalScore = data[i][7].toFixed(6);
-            let edgeID = 'e' + i;
+                // Go through all targets that has an interaction with
+                // the selected P and K, create nodes and edges for them
+                let height = 50;
+                for (let i = 0; i < data.length; i++, height += 75) {
 
-            cy.add([
-                {group: 'nodes', data: {id: currTarget}, position: {x: perturbagen_width, y: height}},
-                {group: 'edges', data: {id: edgeID, source: kinase, target: currTarget, label: finalScore}}
-            ]);
+                    let currTarget = data[i][2];
+                    let currUporDown = data[i][3];
+                    let finalScore = data[i][7].toFixed(3);
+                    let edgeID = 'e' + i;
 
-            cy.nodes('[id="' + currTarget + '"]').style('shape', 'ellipse');
+                    cy.add([
+                        {group: 'nodes', data: {id: currTarget}, position: {x: perturbagen_width, y: height}},
+                        {group: 'edges', data: {id: edgeID, source: kinase, target: currTarget, label: finalScore}}
+                    ]);
 
-            if (currUporDown == 'up') {
-                cy.edges('[id = "' + edgeID + '"]').style('line-color', '#369');
-            }
-        }
+                    cy.nodes('[id="' + currTarget + '"]').style('shape', 'ellipse');
 
-        // Save the PKT interactions to the session cache
-        let storage = JSON.stringify(arrayOfArraysToDict(data));
-        sessionStorage.setItem('PKT_Data', storage);
+                    if (currUporDown == 'up') {
+                        cy.edges('[id = "' + edgeID + '"]').style('line-color', '#369');
+                    }
+                }
 
-        storage = JSON.parse(sessionStorage.getItem('PKT_Data'));
-        let index = storage.findIndex(storage => storage.target == data[0][2]);
-        displayInfo_PKT(storage, index);
+                // Save the PKT interactions to the session cache
+                let storage = JSON.stringify(arrayOfArraysToDict(data));
+                sessionStorage.setItem('PKT_Data', storage);
 
-        // Triggers on clicking the target node, populates the info pane
-        cy.on('tap', 'node', function () {
-
-            if (this.relativePoint().x == perturbagen_width) {
-
-                // Retrieve info from the cache
-                let storage = JSON.parse(sessionStorage.getItem('PKT_Data'));
-                let index = storage.findIndex(storage => storage.target == this.id());
-
+                storage = JSON.parse(sessionStorage.getItem('PKT_Data'));
+                let index = storage.findIndex(storage => storage.target == data[0][2]);
                 displayInfo_PKT(storage, index);
-            }
-        });
 
-    });
+                // Triggers on clicking the target node, populates the info pane
+                cy.on('tap', 'node', function () {
+
+                    if (this.relativePoint().x == perturbagen_width) {
+
+                        // Retrieve info from the cache
+                        let storage = JSON.parse(sessionStorage.getItem('PKT_Data'));
+                        let index = storage.findIndex(storage => storage.target == this.id());
+
+                        displayInfo_PKT(storage, index);
+                    }
+                });
+
+            });
+        });
 }
 
 function show_cyto_PKT() {
