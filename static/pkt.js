@@ -294,6 +294,8 @@ function show_kinase_similarity_details() {
         let current_cy_height = $('#cy3').css('height').split('.')[0];
         let kinase_height = current_cy_height / 2;
 
+        let target_width = current_cy_width - 50;
+
         cy.add([
             {group: 'nodes', data: {id: kinase}, position: {x: kinase_width, y: kinase_height}},
         ]);
@@ -345,7 +347,7 @@ function show_kinase_similarity_details() {
                 let edgeID = 'et' + i;
 
                 cy.add([
-                    {group: 'nodes', data: {id: currKinase}, position: {x: 550, y: height}},
+                    {group: 'nodes', data: {id: currKinase}, position: {x: target_width, y: height}},
                     {group: 'edges', data: {id: edgeID, source: kinase, target: currKinase, label: currRatio}}
                 ]);
 

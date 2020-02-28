@@ -19,6 +19,7 @@ function show_pathway(event){
     $('#cy-big-PKinfo').css('height', '1000px');
 
     $('#kinase-pathway-title').css('visibility', 'visible');
+    $('#kinase-pathway-title').css('visibility', 'visible');
     $('#kinase-pathway-title').css('height', '');
     $('#kinase-pathway-title').css('padding', '10px');
 
