@@ -47,7 +47,8 @@ function cytoScapeStyle(id) {
             'background-color': 'black',
             'shape': 'octagon',
             'width': '40px',
-            'height': '40px'
+            'height': '40px',
+            'font-size': '16pt'
         })
         .selector(':selected')
         .css({

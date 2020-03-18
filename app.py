@@ -37,9 +37,8 @@ def process_ajax():
 
         queryString = "Select distinct kinase from results_PK where perturbagen=\'{}\'".format(perturbagen)
         df = pd.read_sql_query(queryString, conn)
-        result = df.values.tolist()
 
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     # Return all interactions with scores for this Perturbagen & Kinase combo
     elif option == 'get_PKT':
@@ -51,9 +50,8 @@ def process_ajax():
 
         df = pd.read_sql_query(queryString, conn)
         df.sort_values(by=['Score'], inplace=True, ascending=False)
-        result = df.values.tolist()
 
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     # Return all interactions for this Perturbagen
     elif option == 'get_allfor_P':
@@ -65,9 +63,7 @@ def process_ajax():
         df = pd.read_sql_query(queryString, conn)
         df.sort_values(by=['Kinase', 'Target', 'Score'], inplace=True)
 
-        result = df.values.tolist()
-
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     # Return all interactions for this Kinase
     elif option == 'get_allfor_K':
@@ -79,9 +75,7 @@ def process_ajax():
 
         df = pd.read_sql_query(queryString, conn)
 
-        result = df.values.tolist()
-
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     # Return Perturbagen & Kinase scores by applying majority rule
     elif option == 'get_PK':
@@ -112,9 +106,7 @@ def process_ajax():
 
         df = pd.read_sql_query(queryString, conn)
 
-        result = df.values.tolist()
-
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     # Return colocalisation details(secretory, cytosol probs etc..) for selected P & K & T combo
     elif option == 'get_coloc_details':
@@ -129,9 +121,7 @@ def process_ajax():
 
         df = pd.read_sql_query(queryString, conn)
 
-        result = df.values.tolist()
-
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     # Return uniqueness scores for the selected target
     elif option == 'get_uniqueness_details':
@@ -144,9 +134,7 @@ def process_ajax():
         df = pd.read_sql_query(queryString, conn)
         df.sort_values(by='Score', inplace=True, ascending=False)
 
-        result = df.values.tolist()
-
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     elif option == 'get_kinase_similarity_perturbagen_details':
 
@@ -157,9 +145,7 @@ def process_ajax():
 
         df = pd.read_sql_query(queryString, conn)
 
-        result = df.values.tolist()
-
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     elif option == 'get_kinase_similarity_target_details':
 
@@ -170,9 +156,7 @@ def process_ajax():
 
         df = pd.read_sql_query(queryString, conn)
 
-        result = df.values.tolist()
-
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     elif option == 'get_pathway_for_kinase':
 
@@ -183,9 +167,7 @@ def process_ajax():
 
         df = pd.read_sql_query(queryString, conn)
 
-        result = df.values.tolist()
-
-        return jsonify(result)
+        return jsonify(df.values.tolist())
 
     elif option == 'get_pathway_for_PK':
 
@@ -195,10 +177,23 @@ def process_ajax():
 
         df = pd.read_sql_query(queryString, conn)
 
-        result = df.values.tolist()
+        return jsonify(df.values.tolist())
 
-        return jsonify(result)
+    elif option == 'get_secondaryPathway_for_target':
 
+        target = request.form['target']
+        phosphosite = request.form['phosphosite']
+
+        if phosphosite == 'all':
+            queryString = 'select ENTITYA, EFFECT, MECHANISM, RESIDUE from human_pathway_relations where ' \
+                          'ENTITYB = "{}" and RESIDUE not null'.format(target)
+        else:
+            queryString = 'select ENTITYA, EFFECT, MECHANISM from human_pathway_relations ' \
+                          'where ENTITYB = "{}" and RESIDUE = "{}"'.format(target, phosphosite)
+
+        df = pd.read_sql_query(queryString, conn)
+
+        return jsonify(df.values.tolist())
 
 if __name__ == '__main__':
     app.run(debug=True)
