@@ -11,7 +11,7 @@ function pathway_triggers() {
 
     $('#secondaryPathwayBtn').on('click', function(event){
         $('#cy-big-PKinfo').html('');
-        show_secondaryPathway(event);
+        bottom_up_pathway(event);
     })
 }
 
@@ -278,27 +278,10 @@ function secondary_ajax_next_row_kinases(cy, kinase, width, height, iter, origin
 
             let currKinase = data[i][0];
 
-            // // Node visual overlap fix
-            // cy.nodes().some(function(ele) {
-            //     if(width == ele.position().x && height == ele.position().y) {
-            //         width += 130;
-            //         return;
-            //     }
-            // });
-
-            let seen = new Set();
-            for(let k=0;k<data.length;k++){
-                if(!seen.has(data[k][3])){
-                    seen.add(data[k][3]);
-                }
-            }
-            let unique_count = seen.size;
-
-            let phospho_width = width - (50 / unique_count);
-
+            let phospho_start = width - 100;
 
             // Add phosphosites on top of currently affected kinase
-            for (let ii = 0; ii < data.length; ii++, phospho_width += 50){
+            for (let ii = 0; ii < data.length; ii++, phospho_start += 50){
 
                 let currPhosphosite = data[ii][3];
                 let node_id = currPhosphosite;
@@ -307,63 +290,41 @@ function secondary_ajax_next_row_kinases(cy, kinase, width, height, iter, origin
                 cy.nodes().some(function(ele) {
                     if(currPhosphosite == ele.data().id) {
                         node_exists = true;
-                        phospho_width -= 50;
+                        phospho_start -= 50;
                     }
                 });
 
                 if(!node_exists){
                     cy.add([
-                        {group: 'nodes', data: {id: node_id}, position: {x: phospho_width, y: height}},
+                        {group: 'nodes', data: {id: node_id}, position: {x: phospho_start, y: height}},
+                        {group: 'edges',
+                            data: {
+                                id: kinase + '_to_' + node_id,
+                                source: kinase,
+                                target: node_id
+                            }
+                        }
                     ]);
 
                     cy.nodes('[id="' + node_id + '"]').style('width', '30px');
                     cy.nodes('[id="' + node_id + '"]').style('height', '30px');
                     cy.nodes('[id="' + node_id + '"]').style('font-size', '12pt');
                     cy.nodes('[id="' + node_id + '"]').style('background-color', 'orange');
+                    cy.edges('[id="' + kinase + '_to_' + node_id + '"]').style('line-color', 'orange');
                 }
 
+                // x(cy, kinase, currPhosphosite, iter--);
             }
 
-            // cy.add([
-            //     {group: 'nodes', data: {id: currKinase}, position: {x: width, y: height}},
-            //     {group: 'edges',
-            //         data: {
-            //             id: kinase + '_to_' + currKinase,
-            //             source: kinase,
-            //             target: currKinase,
-            //             label: score
-            //         }
-            //     }
-            // ]);
-            //
-            // ajax_pathway_PK(cy, currKinase, width, height);
-            // ajax_next_row_kinases(cy, currKinase, 50, height + 250, iter--);
+
         }
     });
 
     return;
 }
 
-function show_secondaryPathway(event){
 
-    $('#cy-big').css('visibility', 'visible');
-    $('#cy-big').css('height', '1000px');
-
-    $('#cy-big-PKinfo').css('visibility', 'visible');
-    $('#cy-big-PKinfo').css('height', '1000px');
-
-    $('#kinase-pathway-title').css('visibility', 'visible');
-    $('#kinase-pathway-title').css('visibility', 'visible');
-    $('#kinase-pathway-title').css('height', '');
-    $('#kinase-pathway-title').css('padding', '10px');
-
-    // Create a cytoscape graph instance
-    let cy = cytoScapeStyle('cy-big');
-
-    let target = 'DPYSL3';
-    let phosphosite = 'Thr509';
-    let target_with_phosphosite = 'DPYSL3(T509)';
-
+function x(cy, target, phosphosite){
 
     $.ajax({
         data: {
@@ -375,6 +336,8 @@ function show_secondaryPathway(event){
         url: '/process_ajax'
     })
     .done(function (data) {
+
+        let target_with_phosphosite = target + '(' + phosphosite + ')';
 
         let current_cy_width = $('#cy-big').css('width').split('.')[0];
         let start_node_width = current_cy_width / 2;
@@ -419,6 +382,28 @@ function show_secondaryPathway(event){
             secondary_ajax_next_row_kinases(cy, currKinase, width, height - 50, 10);
         }
     });
+}
+
+function show_secondaryPathway(event){
+
+    $('#cy-big').css('visibility', 'visible');
+    $('#cy-big').css('height', '1000px');
+
+    $('#cy-big-PKinfo').css('visibility', 'visible');
+    $('#cy-big-PKinfo').css('height', '1000px');
+
+    $('#kinase-pathway-title').css('visibility', 'visible');
+    $('#kinase-pathway-title').css('visibility', 'visible');
+    $('#kinase-pathway-title').css('height', '');
+    $('#kinase-pathway-title').css('padding', '10px');
+
+    // Create a cytoscape graph instance
+    let cy = cytoScapeStyle('cy-big');
+
+    let target = 'DPYSL3';
+    let phosphosite = 'Thr509';
+
+    x(cy, target, phosphosite);
 
     event.preventDefault();
 }

@@ -85,3 +85,17 @@ function arrayOfArraysToDict(arrayList) {
 
     return objectList;
 }
+
+function unique_phosphosite_count(data){
+
+    let set = new Set();
+
+    for(let i = 0; i < data.length; i++){
+        let phosphosite = data[i][3];
+
+        if(!set.has(phosphosite)){
+            set.add(phosphosite);
+        }
+    }
+    return set.size;
+}

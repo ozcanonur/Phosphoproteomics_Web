@@ -179,7 +179,7 @@ def process_ajax():
 
         return jsonify(df.values.tolist())
 
-    elif option == 'get_secondaryPathway_for_target':
+    elif option == 'get_bottom_up_pathway_for_target':
 
         target = request.form['target']
         phosphosite = request.form['phosphosite']
