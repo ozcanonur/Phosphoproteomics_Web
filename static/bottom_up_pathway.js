@@ -122,6 +122,7 @@ function bottom_up_pathway_phosphosites(cy, kinase, width, height){
                 }
             });
 
+            // Add new phosphosite node and connect it to the kinase
             if(!node_exists){
                 cy.add([
                     {group: 'nodes', data: {id: currPhosphosite}, position: {x: phospho_start, y: height - 50}},
@@ -134,6 +135,7 @@ function bottom_up_pathway_phosphosites(cy, kinase, width, height){
                     }
                 ]);
 
+                // Phosphosite node styling
                 cy.nodes('[id="' + currPhosphosite + '"]').style('width', '30px');
                 cy.nodes('[id="' + currPhosphosite + '"]').style('height', '30px');
                 cy.nodes('[id="' + currPhosphosite + '"]').style('font-size', '12pt');
