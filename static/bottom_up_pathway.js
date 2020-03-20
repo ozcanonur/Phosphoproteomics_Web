@@ -27,12 +27,16 @@ function bottom_up_pathway(event){
         {group: 'nodes', data: {id: `${target_protein}(${target_phosphosite})`}, position: {x: current_cy_width / 2, y: current_cy_height - 50}}
     ]);
 
-    bottom_up_pathway_kinase(cy, target_protein, target_phosphosite, 800);
+    bottom_up_pathway_kinase(5, cy, target_protein, target_phosphosite, 800, 50, 50);
 
     event.preventDefault();
 }
 
-function bottom_up_pathway_kinase(cy, target_protein, target_phosphosite, height){
+function bottom_up_pathway_kinase(iter, cy, target_protein, target_phosphosite, height, phosphosite_width_gap, phosphosite_height_gap){
+
+    if(iter === 0){
+        return;
+    }
 
     $.ajax({
         data: {
@@ -61,13 +65,21 @@ function bottom_up_pathway_kinase(cy, target_protein, target_phosphosite, height
             let label;
             currPhosphorylation_type === "phosphorylation" ? label = '+p' : label = '-p';
 
+            let source;
+            if(height === 800){
+                source = `${target_protein}(${target_phosphosite})`;
+            }
+            else{
+                source = currKinase;
+            }
+
             // Place the kinase and the edge connecting to the target
             cy.add([
                 {group: 'nodes', data: {id: currKinase}, position: {x: kinase_start_width, y: height}},
                 {group: 'edges',
                     data: {
                         id: target_phosphosite + '_to_' + currKinase,
-                        source: `${target_protein}(${target_phosphosite})`,
+                        source: source,
                         target: currKinase,
                         label: label
                     }
@@ -80,12 +92,17 @@ function bottom_up_pathway_kinase(cy, target_protein, target_phosphosite, height
             }
 
             // Put phosphosites
-            bottom_up_pathway_phosphosites(cy, currKinase, kinase_start_width, height);
+            bottom_up_pathway_phosphosites(iter--, cy, currKinase, kinase_start_width, height, phosphosite_width_gap, phosphosite_height_gap);
         }
     });
+
 }
 
-function bottom_up_pathway_phosphosites(cy, kinase, width, height){
+function bottom_up_pathway_phosphosites(iter, cy, kinase, width, height, phosphosite_width_gap, phosphosite_height_gap){
+
+    if(iter === 0){
+        return;
+    }
 
     $.ajax({
         data: {
@@ -102,30 +119,30 @@ function bottom_up_pathway_phosphosites(cy, kinase, width, height){
         let unique_data_length = unique_phosphosite_count(data);
         let phospho_start;
         if(unique_data_length % 2 === 0){
-            phospho_start = width - (((unique_data_length / 2) - 1) * 50) - 25;
+            phospho_start = width - (((unique_data_length / 2) - 1) * phosphosite_width_gap) - (phosphosite_width_gap / 2);
         }
         else{
-            phospho_start = width - ((Math.floor(unique_data_length / 2)) * 50);
+            phospho_start = width - ((Math.floor(unique_data_length / 2)) * phosphosite_width_gap);
         }
 
         // Add phosphosites on top of currently affected kinase
-        for (let i = 0; i < data.length; i++, phospho_start += 50){
+        for (let i = 0; i < data.length; i++, phospho_start += phosphosite_width_gap){
 
             let currPhosphosite = data[i][3];
 
             // Check if the same phosphosite exists
             let node_exists = false;
             cy.nodes().some(function(ele) {
-                if(currPhosphosite == ele.data().id) {
+                if(currPhosphosite === ele.data().id) {
                     node_exists = true;
                     phospho_start -= 50;
                 }
             });
 
-            // Add new phosphosite node and connect it to the kinase
+            // Add new unique phosphosite node and connect it to the kinase
             if(!node_exists){
                 cy.add([
-                    {group: 'nodes', data: {id: currPhosphosite}, position: {x: phospho_start, y: height - 50}},
+                    {group: 'nodes', data: {id: currPhosphosite}, position: {x: phospho_start, y: height - phosphosite_height_gap}},
                     {group: 'edges',
                         data: {
                             id: kinase + '_to_' + currPhosphosite,
@@ -141,12 +158,13 @@ function bottom_up_pathway_phosphosites(cy, kinase, width, height){
                 cy.nodes('[id="' + currPhosphosite + '"]').style('font-size', '12pt');
                 cy.nodes('[id="' + currPhosphosite + '"]').style('background-color', 'orange');
                 cy.edges('[id="' + kinase + '_to_' + currPhosphosite + '"]').style('line-color', 'orange');
+
             }
 
-            //let destination_target_kinase = kinase + '(' + currPhosphosite + ')';
-            //show_kinases_affecting_target(cy, destination_target_kinase, currPhosphosite, width, height - 250 );
+            bottom_up_pathway_kinase(iter--, cy, kinase, currPhosphosite, height - 200, phosphosite_width_gap, phosphosite_height_gap);
         }
 
     });
+
 }
 
