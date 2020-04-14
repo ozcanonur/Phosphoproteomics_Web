@@ -1,3 +1,5 @@
+
+
 function pathway_triggers() {
 
     $('#pathwayBtn').on('click', function(event) {
@@ -11,7 +13,7 @@ function pathway_triggers() {
 
     $('#secondaryPathwayBtn').on('click', function(event){
         $('#cy-big-PKinfo').html('');
-        bottom_up_pathway(event);
+        top_down_pathway(event);
     })
 }
 
@@ -200,7 +202,24 @@ function ajax_next_row_kinases(cy, kinase, width, height, iter, original_kinase)
             // Node visual overlap fix
             cy.nodes().some(function(ele) {
                 if(width == ele.position().x && height == ele.position().y) {
-                    width += 130;
+
+                    let start = ele.position().x;
+                    while(true){
+
+                        let x = true;
+                        cy.nodes().some(function(ele2){
+                           if(ele2.position().y == height && !(ele2.position().x == start)){
+                               x = false;
+                           }
+                        });
+
+                        if(!x){
+                            break;
+                        }
+                        start += 130;
+                    }
+
+                    width = start;
                     return;
                 }
             });
