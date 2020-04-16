@@ -19,7 +19,7 @@
 
     <link rel="icon" href="data:,">
 </head>
-<body>
+<body style="margin:auto">
 
 <div class="navbar navbar-default navbar-fixed-top topnav" role='navigation' style="padding:5px;">
     <div class="container topnav" style="padding:0;margin-left:0;">
@@ -31,7 +31,7 @@
 
 <div style="padding:10px; background-color:white;">
     <form id='form' method="POST" style="display:grid; row-gap: 10px;">
-        <div id="perturbagenDiv" style="display:grid; grid-template-columns: 250px 200px 200px; column-gap: 10px;">
+        <div id="perturbagenDiv" style="display:grid; grid-template-columns: 250px 200px 200px 100px 100px; column-gap: 10px;">
             <div>
                 <select class='custom-select' id='perturbagenSelect'>
                     <option value="Perturbagen"> Perturbagen </option>
@@ -46,6 +46,8 @@
             <div>
                 <button id="secondaryPathwayBtn" style="height:38px; width:100%;">Secondary Pathway</button>
             </div>
+            <input type="text" id="secondary_pathway_start" value="MTOR">
+            <input type="number" id="secondary_pathway_pvalue" value="0.1">
         </div>
 
         <div id="kinaseDiv" style="display:grid; grid-template-columns: 250px 200px 200px 50px 200px; column-gap: 10px;">

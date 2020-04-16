@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
 import sqlite3
 import pandas as pd
 import py_util as util
 
 app = Flask(__name__)
-
+app.secret_key = 'prolog'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -217,6 +217,16 @@ def process_ajax():
         cell_line = request.form['cell_line']
         start_protein = request.form['start_protein']
 
+        # if 'obs_dict' not in session or 'rel_dict' not in session:
+        #     obs_dict = util.dict_unique_phospho_obs(perturbagen, p_value, cell_line)
+        #     rel_dict = util.kinase_to_kinasePhospho_dict()
+        #
+        #     session['obs_dict'] = obs_dict
+        #     session['rel_dict'] = rel_dict
+        # else:
+        #     obs_dict = session['obs_dict']
+        #     rel_dict = session['rel_dict']
+
         obs_dict = util.dict_unique_phospho_obs(perturbagen, p_value, cell_line)
         rel_dict = util.kinase_to_kinasePhospho_dict()
 
@@ -227,7 +237,13 @@ def process_ajax():
 
     elif option == 'read_positions':
 
-        f = open('positions_mtor.txt', 'r')
+        p_value = request.form['p_value']
+
+        if(p_value == '0.05'):
+            f = open('positions_mtor.txt', 'r')
+        elif(p_value == '0.1'):
+            f = open('positions_mtor_p0.1.txt', 'r')
+
         lines = f.readlines()
 
         pos_dict = {}

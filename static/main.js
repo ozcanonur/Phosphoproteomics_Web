@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     // Set up triggers
     filter_kinase();
     show_cyto_PKT();

@@ -97,13 +97,14 @@ function top_down_pathway(event){
     // let current_cy_height = $('#cy-big').css('height').split('.')[0];
 
     let perturbagen = 'Torin';
-    let p_value = 0.05;
+    let p_value = 0.1;
     let cell_line = 'MCF-7';
     let start_protein = 'MTOR';
 
     $.ajax({
         data: {
-            option: 'read_positions'
+            option: 'read_positions',
+            p_value: p_value
         },
         type: 'POST',
         url: '/process_ajax'
@@ -158,9 +159,6 @@ function top_down_pathway(event){
                             let prot_width = parseInt(pos_dict[curr_protein][0]);
                             let prot_height = parseInt(pos_dict[curr_protein][1]);
 
-                            if(curr_protein === 'PFKB3'){
-                                console.log(curr_protein);
-                            }
                             add_cyto_node(cy, 'nodes', curr_protein, curr_protein, prot_width, prot_height, false);
                         }
                         // Add phosphosite for this protein if it doesn't exist
@@ -174,6 +172,8 @@ function top_down_pathway(event){
 
                             add_cyto_edge(cy, 'edges', curr_protein + '_has_' + curr_phosphosite,
                                 '', curr_protein, prot_phospho, '', true);
+
+                            change_cyto_style_byID(cy, 'edges', prot_phospho, 'edgeLength', '10')
                         }
 
                         // Link current phosphosite to the previous kinase
@@ -220,6 +220,7 @@ function top_down_pathway(event){
                         }, event);
                     }
                 });
+
             });
         });
 
