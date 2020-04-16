@@ -271,12 +271,13 @@ def kinase_to_kinasePhospho_dict(dict={}):
 
         new_entry = affected_kinase + '_' + affected_phosphosite + '_' + effect + '_' + mechanism
 
-        if affecting_kinase in dict and new_entry not in dict[affecting_kinase]:
+        if affecting_kinase in dict:
+            if new_entry not in dict[affecting_kinase]:
 
-            curr_value = dict[affecting_kinase]
-            curr_value.append(new_entry)
+                curr_value = dict[affecting_kinase][:]
+                curr_value.append(new_entry)
 
-            dict[affecting_kinase] = curr_value
+                dict[affecting_kinase] = curr_value
 
         else:
             dict[affecting_kinase] = [new_entry]
@@ -287,13 +288,9 @@ def kinase_to_kinasePhospho_dict(dict={}):
 def dict_unique_phospho_obs(perturbagen, p_threshold, cell_line=None, dict={}):
     conn = sqlite3.connect("C:/Users/Onur/PycharmProjects/Flasky/chemphopro.db")
 
-    if cell_line is None:
-        queryString = 'select * from Observation_new ' \
-                      'where perturbagen = "{}" and p_value < {}'.format(perturbagen, p_threshold)
-    else:
-        queryString = 'select * from Observation_new ' \
-                      'where perturbagen = "{}" and p_value < {} ' \
-                      'and cell_line = "{}"'.format(perturbagen, p_threshold, cell_line)
+    queryString = 'select * from Observation_new ' \
+                  'where perturbagen = "{}" and p_value < {} ' \
+                  'and cell_line = "{}"'.format(perturbagen, p_threshold, cell_line)
 
     df = pd.read_sql_query(queryString, conn)
 
@@ -306,6 +303,14 @@ def dict_unique_phospho_obs(perturbagen, p_threshold, cell_line=None, dict={}):
         dict[(row['protein'], row['phosphosite'])] = entry_info
 
     return dict
+
+
+def check_if_exists(node, path):
+    for element in path:
+        protein = node.split('_')[0]
+        if element[1] == protein or element == protein:
+            return True
+    return False
 
 
 def topdown_path(rel_dict, obs_dict, start, path=[]):
@@ -328,9 +333,8 @@ def topdown_path(rel_dict, obs_dict, start, path=[]):
 
     for node in rel_dict[curr_kinase]:
         prot_phosphosite_tuple = (node.split('_')[0], node.split('_')[1])
-        if node not in path and prot_phosphosite_tuple in obs_dict:
+        if prot_phosphosite_tuple in obs_dict and not check_if_exists(node, path):
             newpaths = topdown_path(rel_dict, obs_dict, node, path)
             for newpath in newpaths:
                 paths.append(newpath)
-
     return paths

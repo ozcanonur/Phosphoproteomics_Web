@@ -99,7 +99,7 @@ function top_down_pathway(event){
     let current_cy_height = $('#cy-big').css('height').split('.')[0];
 
     let perturbagen = 'Torin';
-    let p_value = 1;
+    let p_value = 0.05;
     let cell_line = 'MCF-7';
     let start_protein = 'MTOR';
 
@@ -130,8 +130,8 @@ function top_down_pathway(event){
 
                 console.log(data);
 
-                let first_node_width = 400;
-                let first_node_height = -50;
+                let first_node_width = 550;
+                let first_node_height = -150;
 
                 // Add the starting protein node
                 add_cyto_node(cy, 'nodes', start_protein, start_protein, first_node_width, first_node_height, false);
