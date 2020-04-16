@@ -89,14 +89,12 @@ function top_down_pathway(event){
     $('#kinase-pathway-title').css('height', '');
     $('#kinase-pathway-title').css('padding', '10px');
 
-
-
-    let target_protein = 'DPYSL3';
-    let target_phosphosite = 'Thr509';
-
-    // Dimensions of the cy container
-    let current_cy_width = $('#cy-big').css('width').split('.')[0];
-    let current_cy_height = $('#cy-big').css('height').split('.')[0];
+    // let target_protein = 'DPYSL3';
+    // let target_phosphosite = 'Thr509';
+    //
+    // // Dimensions of the cy container
+    // let current_cy_width = $('#cy-big').css('width').split('.')[0];
+    // let current_cy_height = $('#cy-big').css('height').split('.')[0];
 
     let perturbagen = 'Torin';
     let p_value = 0.05;
@@ -110,10 +108,9 @@ function top_down_pathway(event){
         type: 'POST',
         url: '/process_ajax'
         })
-        .done(function (data1){
+        .done(function (positions){
 
-            let pos_dict = data1;
-            console.log(data1);
+            let pos_dict = positions;
 
             $.ajax({
                 data: {
@@ -134,9 +131,11 @@ function top_down_pathway(event){
                 let first_node_height = -150;
 
                 // Add the starting protein node
-                add_cyto_node(cy, 'nodes', start_protein, start_protein, first_node_width, first_node_height, false);
+                add_cyto_node(cy, 'nodes', start_protein, start_protein,
+                    first_node_width, first_node_height, false);
 
-                //let width_gap = 150;
+                let fold_change_dict = {};
+
                 // Iterate through all possible paths
                 for (let path of data){
                     // Iterate through the path
@@ -146,13 +145,12 @@ function top_down_pathway(event){
                         let curr_phosphosite = path[i][2];
                         let curr_fold_change = path[i][4].toFixed(2);
                         let curr_p_value = path[i][5].toFixed(2);
+                        let curr_cv = path[i][6].toFixed(2);
                         let curr_effect = path[i][8];
                         let curr_mechanism = path[i][9];
 
                         let prot_phospho = curr_protein + '_' + curr_phosphosite;
-
-                        //let prot_width = first_node_width + width_gap;
-                        //let prot_height = 50 + (1 * 200);
+                        fold_change_dict[prot_phospho] = [curr_fold_change, curr_p_value, curr_cv];
 
                         // Add protein node if it doesn't exist
                         if(!cyto_element_exists_byID(cy, curr_protein)){
@@ -167,9 +165,6 @@ function top_down_pathway(event){
                         }
                         // Add phosphosite for this protein if it doesn't exist
                         if(!cyto_element_exists_byID(cy, prot_phospho)){
-
-                            //let phosphosite_width = prot_width;
-                            //let phosphosite_height = prot_height - 50;
 
                             let phosphosite_width = parseInt(pos_dict[prot_phospho][0]);
                             let phosphosite_height = parseInt(pos_dict[prot_phospho][1]);
@@ -198,10 +193,33 @@ function top_down_pathway(event){
                             change_cyto_style_byID(cy, 'edges',
                                 curr_protein + '_affects_' + curr_phosphosite, 'line-color', 'blue');
                         }
-
                     }
                 }
 
+                // Triggers on clicking the target node, populates the info pane
+                cy.on('tap', 'node', function (event) {
+
+                    let evtTarget = event.target;
+
+                    if (evtTarget.id().split('_').length > 1) {
+
+                        let curr_fold_change = fold_change_dict[evtTarget.id()][0];
+
+                        evtTarget.qtip({
+                            content: curr_fold_change,
+                            show: {
+                                event: event.type,
+                                ready: true
+                            },
+                            hide: {
+                                event: 'tap'
+                            },
+                            style: {
+                                classes: 'qtip-youtube'
+                            }
+                        }, event);
+                    }
+                });
             });
         });
 

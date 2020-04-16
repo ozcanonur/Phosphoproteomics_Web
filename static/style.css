@@ -136,3 +136,7 @@ a {
 #finalScoreInfoID {
     color: red;
 }
+
+.qtip-content{
+    font-size:16px;
+}
