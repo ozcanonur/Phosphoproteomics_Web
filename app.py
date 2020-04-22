@@ -228,7 +228,7 @@ def process_ajax():
         #     rel_dict = session['rel_dict']
 
         obs_dict = util.dict_unique_phospho_obs(perturbagen, p_value, cell_line)
-        rel_dict = util.kinase_to_kinasePhospho_dict()
+        rel_dict = util.rel_dict_topdown()
 
         paths = util.topdown_path(rel_dict, obs_dict, start_protein)
         for path in paths:

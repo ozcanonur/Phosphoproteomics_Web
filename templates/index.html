@@ -44,7 +44,7 @@
                 <button id="perturbSeeAllBtn" style="height:38px; width:100%;">See all for this P</button>
             </div>
             <div>
-                <button id="secondaryPathwayBtn" style="height:38px; width:100%;">Secondary Pathway</button>
+                <button id="secondaryPathwayBtn" style="height:38px; width:100%;">Top-down Pathway</button>
             </div>
             <input type="text" id="secondary_pathway_start" value="MTOR">
             <input type="number" id="secondary_pathway_pvalue" value="0.1">
@@ -63,12 +63,12 @@
                 <button id="kinaseSeeAllBtn" style="height:38px; width:100%;">See all for this K</button>
             </div>
             <div>
-                <button id="pathwayBtn" style="height:38px; width:100%;">Pathway</button>
+                <button id="pathwayBtn" style="height:38px; width:100%;">Bottom-up Pathway</button>
             </div>
-            <div style="display:grid; text-align:center;">
-                <input type="range" min="0" max="1" step="0.1" value="0" class="slider" id="pathwaySlider" oninput="pathwaySliderNum.value = 'KT_assoc threshold:' + pathwaySlider.value">
-                <output name="pathwaySliderNum" id="pathwaySliderNum" style="font-weight:bold; font-size:8pt;">KT_assoc threshold: 0</output>
-            </div>
+{#            <div style="display:grid; text-align:center;">#}
+{#                <input type="range" min="0" max="1" step="0.1" value="0" class="slider" id="pathwaySlider" oninput="pathwaySliderNum.value = 'KT_assoc threshold:' + pathwaySlider.value">#}
+{#                <output name="pathwaySliderNum" id="pathwaySliderNum" style="font-weight:bold; font-size:8pt;">KT_assoc threshold: 0</output>#}
+{#            </div>#}
         </div>
     </form>
 </div>
@@ -136,7 +136,8 @@
 <script src="{{ url_for('static', filename='p_all_k_all.js') }}"></script>
 <script src="{{ url_for('static', filename='pathway.js') }}"></script>
 <script src="{{ url_for('static', filename='pkt.js') }}"></script>
-<script src="{{ url_for('static', filename='topdown.js') }}"></script>
+<script src="{{ url_for('static', filename='topdown_original.js') }}"></script>
+<script src="{{ url_for('static', filename='bottomup.js') }}"></script>
 <script src="{{ url_for('static', filename='util_style.js') }}"></script>
 
 <script>

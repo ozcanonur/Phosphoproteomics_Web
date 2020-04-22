@@ -8,7 +8,7 @@ function pathway_triggers() {
     });
 
     $('#pathwaySlider').on('input', function(event) {
-        show_pathway(event);
+        bottom_up_pathway(event);
     });
 
     $('#secondaryPathwayBtn').on('click', function(event){

@@ -97,9 +97,9 @@ function top_down_pathway(event){
     // let current_cy_height = $('#cy-big').css('height').split('.')[0];
 
     let perturbagen = 'Torin';
-    let p_value = 0.1;
+    let p_value = $('#secondary_pathway_pvalue').val();
     let cell_line = 'MCF-7';
-    let start_protein = 'MTOR';
+    let start_protein = $('#secondary_pathway_start').val();
 
     $.ajax({
         data: {
@@ -112,6 +112,8 @@ function top_down_pathway(event){
         .done(function (positions){
 
             let pos_dict = positions;
+            let p_value = $('#secondary_pathway_pvalue').val();
+            let start_protein = $('#secondary_pathway_start').val();
 
             $.ajax({
                 data: {
@@ -172,8 +174,6 @@ function top_down_pathway(event){
 
                             add_cyto_edge(cy, 'edges', curr_protein + '_has_' + curr_phosphosite,
                                 '', curr_protein, prot_phospho, '', true);
-
-                            change_cyto_style_byID(cy, 'edges', prot_phospho, 'edgeLength', '10')
                         }
 
                         // Link current phosphosite to the previous kinase
