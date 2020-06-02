@@ -5,6 +5,7 @@ import py_util as util
 
 app = Flask(__name__)
 app.secret_key = 'prolog'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -71,7 +72,7 @@ def process_ajax():
         kinase = request.form['kinase']
 
         queryString = "Select Perturbagen, Kinase, Score " \
-                      "from results_PK where kinase = '{}' order by Score desc limit 10".format(kinase)
+                      "from results_PK_PDT where kinase = '{}' order by Score desc limit 10".format(kinase)
 
         df = pd.read_sql_query(queryString, conn)
 
@@ -228,34 +229,65 @@ def process_ajax():
         #     rel_dict = session['rel_dict']
 
         obs_dict = util.dict_unique_phospho_obs(perturbagen, p_value, cell_line)
-        rel_dict = util.rel_dict_topdown()
+        rel_dict = util.rel_dict_topdown(obs_dict)
 
         paths = util.topdown_path(rel_dict, obs_dict, start_protein)
-        for path in paths:
-            print(path)
+
         return jsonify(paths)
 
-    elif option == 'read_positions':
+    elif option == 'get_bottom_up_pathway':
 
+        perturbagen = request.form['perturbagen']
         p_value = request.form['p_value']
+        cell_line = request.form['cell_line']
+        start_protein = request.form['start_protein']
 
-        if(p_value == '0.05'):
-            f = open('positions_mtor.txt', 'r')
-        elif(p_value == '0.1'):
-            f = open('positions_mtor_p0.1.txt', 'r')
+        # if session.get('obs_dict') == None or session.get('rel_Dict') == None:
+        #     obs_dict = util.dict_unique_phospho_obs_bottomup(perturbagen, p_value, cell_line)
+        #     rel_dict = util.rel_dict_bottomup(obs_dict)
+        #
+        #     session['obs_dict'] = obs_dict
+        #     session['rel_dict'] = rel_dict
+        # else:
+        #     print(session.get('obs_dict'))
+        #     print('Obtained from session cache')
+        #     obs_dict = session.get('obs_dict')
+        #     rel_dict = session.get('rel_dict')
 
-        lines = f.readlines()
+        if session.get('paths') == None:
+            obs_dict = util.dict_unique_phospho_obs_bottomup(perturbagen, p_value, cell_line)
+            rel_dict = util.rel_dict_bottomup(obs_dict)
+            paths = util.bottomup_path(rel_dict, obs_dict, start_protein)
+            paths = util.add_stop_cond_reasons(paths)
+            session['paths'] = paths
+        else:
+            print('Got paths')
+            paths = session['paths']
+            print(paths)
 
-        pos_dict = {}
-        for line in lines:
+        return jsonify(paths)
 
-            node_id = line.split(':')[0]
-            node_posx = line.split('[')[1].split(',')[0]
-            node_posy = line.split(', ')[1].split(']')[0]
-
-            pos_dict[node_id] = [node_posx, node_posy]
-
-        return jsonify(pos_dict)
+    # elif option == 'read_positions':
+    #
+    #     p_value = request.form['p_value']
+    # 
+    #     if(p_value == '0.05'):
+    #         f = open('positions_mtor.txt', 'r')
+    #     elif(p_value == '0.1'):
+    #         f = open('positions_mtor_p0.1.txt', 'r')
+    #
+    #     lines = f.readlines()
+    #
+    #     pos_dict = {}
+    #     for line in lines:
+    #
+    #         node_id = line.split(':')[0]
+    #         node_posx = line.split('[')[1].split(',')[0]
+    #         node_posy = line.split(', ')[1].split(']')[0]
+    #
+    #         pos_dict[node_id] = [node_posx, node_posy]
+    #
+    #     return jsonify(pos_dict)
 
 
 if __name__ == '__main__':
