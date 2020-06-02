@@ -7,16 +7,28 @@ body {
     max-width:1350px;
     margin:auto;
 }
+.topnav {
+    padding:0;
+    margin-left:0;
+}
 
 .custom-select {
     font-weight:900;
 }
+
+#form{
+    display:grid;
+    row-gap: 10px;
+}
+
 option{
     font-weight:900;
 }
+
 button{
     font-weight:900;
 }
+
 .navbar-default {
     background-color: #00629b;
     border-color: aliceblue;
@@ -36,11 +48,45 @@ li {
 #perturbagenDiv {
     margin-right: 50px;
     float:left;
+    display:grid;
+    grid-template-columns: 250px 200px 200px 100px 100px;
+    column-gap: 10px;
 }
 
+#perturbSeeAllBtn{
+    height:38px;
+    width:100%;
+}
+
+#kinaseSeeAllBtn{
+    height:38px;
+    width:100%;
+}
+
+#pathwayBtn{
+    height:38px;
+    width:100%;
+}
+
+#secondaryPathwayBtn{
+    height:38px;
+    width:100%;
+}
+
+#kinase-pathway-title{
+    background-color: #00629b;
+    color:white;
+    text-align:center;
+    font-size:15pt;
+    font-weight:900;
+    padding:10px;
+}
 #kinaseDiv {
     margin-right: 50px;
     width:25%;
+    display:grid;
+    grid-template-columns: 250px 200px 200px 50px 200px;
+    column-gap: 10px;
 }
 
 .details_form {
@@ -77,23 +123,65 @@ li {
 #cy-big {
     background-color: white;
     float:left;
-    visibility: hidden;
-    height: 0;
     margin-left:10px;
+    visibility: visible;
+    height:1000px;
+}
+
+#PKT{
+    background-color: #00629b;
+    color:white;
+    text-align:center;
+    font-size:15pt;
+    font-weight:900;
+    padding:10px;
+}
+
+#cy-container{
+    display:grid;
+    column-gap:10px;
+    grid-template-columns: 7fr 3fr;
+    padding:0;
+    visibility:visible;
+    background-color:#00629b;
+}
+
+#Interaction-div{
+    display:grid;
+    grid-template-rows: 6fr 4fr;
 }
 
 #cy-big-PKinfo {
     background-color: white;
     float:right;
-    visibility: hidden;
-    height: 0;
     overflow:auto;
     margin-right:10px;
+    visibility:visible;
+    height:1000px;
 }
+
 #interactionInfo {
     padding: 10px;
     background-color: white;
     margin-right:10px;
+    display:grid;
+    grid-template-rows:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+#KTA{
+    background-color: #00629b;
+    color:white;
+    text-align:center;
+    font-size:15pt;
+    font-weight:900;
+    padding:10px;
+}
+
+#KTA-grid{
+    display:grid;
+    column-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    background-color: #00629b;
 }
 
 #interactionInfo > div > a {
